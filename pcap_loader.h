@@ -5,6 +5,7 @@
 #define __USE_LARGEFILE64
 #define _LARGEFILE64_SOURCE
 
+#include <stdio.h>
 #include <stdint.h>
 #include <vector>
 using std::vector;
