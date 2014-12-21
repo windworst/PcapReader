@@ -6,16 +6,35 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->m_pcaploader = NULL;
+
     this->initView();
 }
 
 MainWindow::~MainWindow()
 {
+    this->closePcap();
     delete ui;
 }
 
 void MainWindow::initTableView()
 {
+}
+
+void MainWindow::openPcap(const char *path)
+{
+    this->closePcap();
+    this->m_pcaploader = new pcap_loader(path);
+}
+
+void MainWindow::closePcap()
+{
+    if ( this->m_pcaploader != NULL )
+    {
+        delete this->m_pcaploader;
+        this->m_pcaploader = NULL;
+    }
 }
 
 void MainWindow::initView()

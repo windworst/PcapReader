@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    pcappacktablemodel.cpp
+    pcappacktablemodel.cpp \
+    pcap_loader.cpp
 
 HEADERS  += mainwindow.h \
-    pcappacktablemodel.h
+    pcappacktablemodel.h \
+    pcap_loader.h
 
 FORMS    += mainwindow.ui

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "pcap_loader.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -18,6 +20,8 @@ public:
 protected:
     void initView();
     void initTableView();
+    void openPcap(const char* path);
+    void closePcap();
 
 private slots:
     void openFile();
@@ -26,6 +30,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    pcap_loader* m_pcaploader;
 };
 
 #endif // MAINWINDOW_H
