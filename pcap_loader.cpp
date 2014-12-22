@@ -42,13 +42,13 @@ pcap_data_info pcap_loader::get_pack(int index)
     return this->data_list.at(index);
 }
 
-int64_t pcap_loader::read_from(char *buf, int64_t len, int64_t offset = 0)
+int64_t pcap_loader::read_from(void *buf, int64_t len, int64_t offset = 0)
 {
     fseek( this->file_pcap, offset, SEEK_SET );
-    return fread( buf, 1, len, this->file_pcap );
+    return fread( (char*)buf, 1, len, this->file_pcap );
 }
 
-int64_t pcap_loader::read_from_pack(pcap_data_info &info, char *buf, int64_t len, int64_t offset = 0)
+int64_t pcap_loader::read_from_pack(pcap_data_info &info, void *buf, int64_t len, int64_t offset)
 {
     return this->read_from( buf, len, info.offset + offset );
 }
@@ -84,5 +84,4 @@ void pcap_loader::load_file(const char *path)
       fseek( this->file_pcap, item.data.pack_length, SEEK_CUR );
 
     }
-    fclose(this->file_pcap);
 }

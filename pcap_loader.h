@@ -95,8 +95,8 @@ public:
     pcap_file_head get_head();
     int get_packs_count();
     pcap_data_info get_pack(int index);
-    int64_t read_from(char* buf, int64_t len, int64_t offset);
-    int64_t read_from_pack(pcap_data_info& info, char* buf, int64_t len, int64_t offset);
+    int64_t read_from(void* buf, int64_t len, int64_t offset);
+    int64_t read_from_pack(pcap_data_info& info, void* buf, int64_t len, int64_t offset = 0);
 
 protected:
     void load_file(const char* path);
