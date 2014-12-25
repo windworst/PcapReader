@@ -7,11 +7,7 @@ pcap_loader::pcap_loader(const char* path)
 
 pcap_loader::~pcap_loader()
 {
-    if( file_pcap!=NULL )
-    {
-        fclose( file_pcap );
-        file_pcap = NULL;
-    }
+    this->close();
 }
 
 int pcap_loader::status()
@@ -55,6 +51,7 @@ int64_t pcap_loader::read_from_pack(pcap_data_info &info, void *buf, int64_t len
 
 void pcap_loader::load_file(const char *path)
 {
+    if( path == NULL) return;
     this->file_pcap = fopen( path, "rb" );
     if( this->file_pcap == NULL )
     {
@@ -84,4 +81,15 @@ void pcap_loader::load_file(const char *path)
       fseek( this->file_pcap, item.data.pack_length, SEEK_CUR );
 
     }
+}
+
+void pcap_loader::close()
+{
+    if( file_pcap!=NULL )
+    {
+        fclose( file_pcap );
+        file_pcap = NULL;
+    }
+    data_list.clear();
+    this->head.magic = 0;
 }

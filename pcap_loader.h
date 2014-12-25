@@ -87,7 +87,7 @@ struct pcap_data_info
 class pcap_loader
 {
 public:
-    pcap_loader(const char* path);
+    pcap_loader(const char* path = NULL);
     ~pcap_loader();
 
     enum STATUS{ SUCCESS=0, OPEN_FILE_ERROR, FILE_TYPE_ERROR };
@@ -97,9 +97,8 @@ public:
     pcap_data_info get_pack(int index);
     int64_t read_from(void* buf, int64_t len, int64_t offset);
     int64_t read_from_pack(pcap_data_info& info, void* buf, int64_t len, int64_t offset = 0);
-
-protected:
     void load_file(const char* path);
+    void close();
 
 private:
     FILE* file_pcap;
