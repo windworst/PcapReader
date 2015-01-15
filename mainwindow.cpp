@@ -43,7 +43,7 @@ void MainWindow::openPcap(const char *path)
     }
     else
     {
-        this->setWindowTitle(QString(WINDOW_TITLE)+ " - " + path );
+        this->setWindowTitle(QString(WINDOW_TITLE)+ " - " + QString::fromLocal8Bit(path) );
     }
 }
 
@@ -55,6 +55,7 @@ void MainWindow::closePcap()
         delete this->m_pcaploader;
         this->m_pcaploader = NULL;
     }
+    ui->outputHex->setText("");
     this->setWindowTitle(WINDOW_TITLE);
 }
 
@@ -173,22 +174,38 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     data.resize(info.length());
     this->m_pcaploader->read_from_pack(info,data.data(),data.size());
 
-    QString text = (char*)data.data();
-    ui->outputText->setText(text);
-
-    QString hex;
-
+    QString out_data;
     {
+        unsigned line_number = 0X10;
         unsigned int i;
-        for(i=0;i<data.size();++i)
+        for(i=0; i<data.size(); i+=line_number)
         {
-            hex += QString().sprintf("%02X ", data.at(i));
-            if( (i+1) % 16 == 0 )
+            unsigned int j;
+            for( j=0; j<line_number && i + j <data.size(); ++j)
             {
-                hex += "\n";
+                out_data += QString().sprintf("%02X ", data.at( i + j ));
+            }
+            while( j < line_number )
+            {
+                out_data += "   ";
+                ++j;
+            }
+            out_data += "  ";
+            for( j=0; j<line_number && i + j <data.size(); ++j)
+            {
+                unsigned char c = data.at( i + j );
+                if ( c < 0X20 || c == 0XFF ) //invisible charactor
+                {
+                    c = '.';
+                }
+                out_data += c;
+            }
+
+            if( j == line_number )
+            {
+                out_data += "\n";
             }
         }
     }
-
-    ui->outputHex->setText(hex);
+    ui->outputHex->setText(out_data);
 }
